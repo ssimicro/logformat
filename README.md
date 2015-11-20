@@ -29,6 +29,10 @@ This library solves those problems by nicely formatting objects as `key=value` p
 
     date=2015-11-19 client.agent=firefox client.ip=10.1.32.1 server.ip=192.168.2.222
 
+## Installation
+
+    npm install --save logformat
+
 ## API
 
 ### logformat(any)
@@ -51,6 +55,12 @@ console.log(logformat(fs.statSync('/dev/null')));
 
 // -> 'dev=287613608 mode=8630 nlink=1 uid=0 gid=0 rdev=50331650 blksize=131072 ino=303 size=0 blocks=0'
 ```
+
+## Testing
+
+There is an automated test suite:
+
+    npm test
 
 ## License
 
