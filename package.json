@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/tcort/logformat.git"
+    "url": "git://github.com/ssimicro/logformat.git"
   },
   "keywords": [
     "log",
@@ -20,12 +20,12 @@
     "toString",
     "convert"
   ],
-  "author": "Thomas Cort <thomasc@ssimicro.com>",
+  "author": "SSi Micro Ltd <propellorheads@ssimicro.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tcort/logformat/issues"
+    "url": "https://github.com/ssimicro/logformat/issues"
   },
-  "homepage": "https://github.com/tcort/logformat#readme",
+  "homepage": "https://github.com/ssimicro/logformat#readme",
   "dependencies": {
     "lodash": "^3.10.1"
   },
