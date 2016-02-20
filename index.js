@@ -3,7 +3,14 @@
 var _ = require('lodash');
 
 function toString(str) {
-    return _.has(str, 'toString') ? str.toString() : ''+str;
+    try {
+        return _.has(str, 'toString') ? str.toString() : ''+str;
+    } catch (err) {
+        // some properties of mysql connection pools are objects that
+        // cannot be converted to a primitive type using ''+str
+        // mimic util.inspect() by simply returning an empty object string
+        return '{}';
+    }
 }
 
 function applyQuotes(str) {
