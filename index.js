@@ -13,14 +13,14 @@ function applyQuotes(str) {
 module.exports = function logformat(obj) {
     if (_.isString(obj)) {
         return obj;
-    } else if (_.isNumber(obj)) {
+    } else if (_.isNumber(obj) || _.isBoolean(obj) || _.isRegExp(obj)) {
         return toString(obj);
     } else if (_.isObject(obj)) {
         var r = [];
         _.each(obj, function (val, key) {
             if (_.isNull(val) || _.isUndefined(val)) {
                 r.push(key + '=' + val);
-            } else if (_.isObject(val)) {
+            } else if (_.isObject(val) && !_.isRegExp(val)) {
                 _.each(val, function (innerVal, innerKey) {
                     if (_.isNull(innerVal) || _.isUndefined(innerVal)) {
                         r.push(key + '.' + innerKey + '=' + innerVal);
