@@ -65,4 +65,17 @@ describe('logformat', function () {
             42
         ])).to.be('0=true 1=null 2=undefined 3=test 4="quoted test" 6=42');
     });
+    it('should not choke on curicular references', function () {
+        var a = {};
+        var b = {};
+        var c = {};
+
+        a.b = b;
+        b.a = a;
+        c.b = b;
+
+        expect(function () { logformat(a) }).not.to.throwException();
+        expect(function () { logformat(b) }).not.to.throwException();
+        expect(function () { logformat(c) }).not.to.throwException();
+    });
 });
