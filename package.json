@@ -1,6 +1,6 @@
 {
   "name": "logformat",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "stringify objects into searchable strings",
   "main": "index.js",
   "scripts": {
