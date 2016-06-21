@@ -30,6 +30,10 @@ describe('logformat', function () {
         expect(logformat(true)).to.be('true');
         expect(logformat(false)).to.be('false');
     });
+    it('should return an ISO8601 formatted string when given a Date object', function () {
+        expect(logformat(new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)'))).to.be('2016-06-21T08:37:16-04:00');
+        expect(logformat({ date: new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)') })).to.be('date=2016-06-21T08:37:16-04:00');
+    });
     it('should return a string of key=value pairs for objects', function () {
         expect(logformat({
             foo: undefined,                         // maps to foo=undefined

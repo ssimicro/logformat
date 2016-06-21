@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require('lodash');
+var moment = require('moment');
 
 function toString(str) {
     try {
@@ -22,11 +23,15 @@ module.exports = function logformat(obj) {
         return obj;
     } else if (_.isNumber(obj) || _.isBoolean(obj) || _.isRegExp(obj)) {
         return toString(obj);
+    } else if (_.isDate(obj)) {
+        return moment(obj).format();
     } else if (_.isObject(obj)) {
         var r = [];
         _.each(obj, function (val, key) {
             if (_.isNull(val) || _.isUndefined(val)) {
                 r.push(key + '=' + val);
+            } else if (_.isDate(val)) {
+                r.push(key + '=' + moment(val).format());
             } else if (_.isObject(val) && !_.isRegExp(val)) {
                 _.each(val, function (innerVal, innerKey) {
                     if (_.isNull(innerVal) || _.isUndefined(innerVal)) {

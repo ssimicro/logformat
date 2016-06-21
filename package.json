@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/ssimicro/logformat#readme",
   "dependencies": {
-    "lodash": "^4.5.0"
+    "lodash": "^4.5.0",
+    "moment": "^2.13.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
