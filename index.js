@@ -21,12 +21,17 @@ function applyQuotes(str) {
 module.exports = function logformat(obj) {
     if (_.isString(obj)) {
         return obj;
-    } else if (_.isNumber(obj) || _.isBoolean(obj) || _.isRegExp(obj) || _.isError(obj)) {
+    } else if (_.isNumber(obj) || _.isBoolean(obj) || _.isRegExp(obj)) {
         return toString(obj);
     } else if (_.isDate(obj)) {
         return moment(obj).format();
     } else if (_.isObject(obj)) {
         var r = [];
+
+        if (_.isError(obj)) {
+            r.push(toString(obj));
+        }
+
         _.each(obj, function (val, key) {
             if (_.isNull(val) || _.isUndefined(val)) {
                 r.push(key + '=' + val);
