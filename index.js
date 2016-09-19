@@ -3,6 +3,33 @@
 var _ = require('lodash');
 var moment = require('moment');
 
+// Error objects have a lot of non-enumerable properties
+// Here's we include them (plus whatever properties the user set)
+function getKeys(obj) {
+    var keys = _.keys(obj);
+
+    if (_.isError(obj)) {
+        var errKeys = _.filter([
+            'message',              // standard keys
+            'name',
+
+            'description',          // Microsoft keys
+            'number',
+
+            'fileName',             // Mozilla keys
+            'lineNumber',
+            'columnNumber',
+
+        ], function (key) {
+            return _.has(obj, key);
+        });
+
+        keys = _.uniq(keys.concat(errKeys));
+    }
+
+    return keys;
+}
+
 function toString(str) {
     try {
         return _.has(str, 'toString') ? str.toString() : ''+str;
@@ -28,19 +55,15 @@ module.exports = function logformat(obj) {
     } else if (_.isObject(obj)) {
         var r = [];
 
-        if (_.isError(obj)) {
-            r.push(toString(obj));
-        }
-
-        _.each(obj, function (val, key) {
+        _.each(getKeys(obj), function (key) {
+            var val = obj[key];
             if (_.isNull(val) || _.isUndefined(val)) {
                 r.push(key + '=' + val);
             } else if (_.isDate(val)) {
                 r.push(key + '=' + moment(val).format());
-            } else if (_.isError(val)) {
-                r.push(key + '=' + applyQuotes(toString(val)));
             } else if (_.isObject(val) && !_.isRegExp(val)) {
-                _.each(val, function (innerVal, innerKey) {
+                _.each(getKeys(val), function (innerKey) {
+                    var innerVal = val[innerKey];
                     if (_.isNull(innerVal) || _.isUndefined(innerVal)) {
                         r.push(key + '.' + innerKey + '=' + innerVal);
                     } else if (!_.isFunction(innerVal)) {
