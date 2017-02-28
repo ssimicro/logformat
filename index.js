@@ -55,7 +55,14 @@ module.exports = function logformat(obj) {
     } else if (_.isObject(obj)) {
         var r = [];
 
-        _.each(getKeys(obj), function (key) {
+        var keys = getKeys(obj);
+        if (_.isError(obj)) {
+            r.push('ERROR');
+            r.push(toString(obj.message));
+            keys = _.difference(keys, ['stack', 'message']);
+        }
+
+        _.each(keys, function (key) {
             var val = obj[key];
             if (_.isNull(val) || _.isUndefined(val)) {
                 r.push(key + '=' + val);
