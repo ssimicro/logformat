@@ -1,34 +1,8 @@
 "use strict";
 
-var _ = require('lodash');
-var moment = require('moment');
-
-// Error objects have a lot of non-enumerable properties
-// Here's we include them (plus whatever properties the user set)
-function getKeys(obj) {
-    var keys = _.keys(obj);
-
-    if (_.isError(obj)) {
-        var errKeys = _.filter([
-            'message',              // standard keys
-            'name',
-
-            'description',          // Microsoft keys
-            'number',
-
-            'fileName',             // Mozilla keys
-            'lineNumber',
-            'columnNumber',
-
-        ], function (key) {
-            return _.has(obj, key);
-        });
-
-        keys = _.uniq(keys.concat(errKeys));
-    }
-
-    return keys;
-}
+const _ = require('lodash');
+const moment = require('moment');
+const flatten = require('flat');
 
 function toString(str) {
     try {
@@ -46,43 +20,27 @@ function applyQuotes(str) {
 }
 
 module.exports = function logformat(obj) {
-    if (_.isString(obj)) {
-        return obj;
-    } else if (_.isNumber(obj) || _.isBoolean(obj) || _.isRegExp(obj)) {
+
+    if (obj === null || obj === undefined) {
+        return '';
+    } else if (typeof obj !== 'object' || _.isRegExp(obj)) {
         return toString(obj);
     } else if (_.isDate(obj)) {
         return moment(obj).format();
-    } else if (_.isObject(obj)) {
-        var r = [];
-
-        var keys = getKeys(obj);
-        if (_.isError(obj)) {
-            r.push('ERROR');
-            r.push(toString(obj.message));
-            keys = _.difference(keys, ['stack', 'message']);
-        }
-
-        _.each(keys, function (key) {
-            var val = obj[key];
-            if (_.isNull(val) || _.isUndefined(val)) {
-                r.push(key + '=' + val);
-            } else if (_.isDate(val)) {
-                r.push(key + '=' + moment(val).format());
-            } else if (_.isObject(val) && !_.isRegExp(val)) {
-                _.each(getKeys(val), function (innerKey) {
-                    var innerVal = val[innerKey];
-                    if (_.isNull(innerVal) || _.isUndefined(innerVal)) {
-                        r.push(key + '.' + innerKey + '=' + innerVal);
-                    } else if (!_.isFunction(innerVal)) {
-                        r.push(key + '.' + innerKey + '=' + applyQuotes(toString(innerVal)));
-                    }
-                });
-            } else if (!_.isFunction(val)) {
-                r.push(key + '=' + applyQuotes(toString(val)));
-            }
-        });
-        return r.join(' ');
-    } else {
-        return '';
     }
+
+    obj = flatten(obj);                         // flatten object
+    obj = _.toPairs(obj);                       // convert to array of key/value pairs
+    obj = obj.map((pair) => {                   // manipulate values for better output
+        switch (true) {
+            case _.isString(pair[1]):   pair[1] = applyQuotes(pair[1]);             break;
+            case _.isDate(pair[1]):     pair[1] = moment(pair[1]).format();         break;
+            default:                    pair[1] = applyQuotes(toString(pair[1]));   break;
+        }
+        return pair;
+    });
+    obj = obj.map((pair) => pair.join('='));    // join key/value pairs with equal sign
+    obj = obj.join(' ');                        // join all pairs with space
+
+    return obj;
 };
