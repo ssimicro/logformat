@@ -19,7 +19,9 @@ function applyQuotes(str) {
     return str.indexOf(' ') !== -1 ? '"' + str + '"' : str;
 }
 
-module.exports = function logformat(obj) {
+module.exports = function logformat(obj, opts) {
+
+    const flatOpts = { maxDepth: _.get(opts, 'maxDepth') };
 
     if (obj === null || obj === undefined) {
         return '';
@@ -29,7 +31,7 @@ module.exports = function logformat(obj) {
         return moment(obj).format();
     }
 
-    obj = flatten(obj);                         // flatten object
+    obj = flatten(obj, flatOpts);               // flatten object
     obj = _.toPairs(obj);                       // convert to array of key/value pairs
     obj = obj.map((pair) => {                   // manipulate values for better output
         switch (true) {

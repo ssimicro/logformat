@@ -80,4 +80,10 @@ describe('logformat', () => {
             42
         ])).to.be('0=true 1=null 2=undefined 3=test 4="quoted test" 5=42');
     });
+    it('should respect maxDepth option', () => {
+        const obj = { foo: { bar: { baz: 1} } };
+        expect(logformat(obj, { maxDepth: 2 })).to.be('foo.bar="[object Object]"');
+        expect(logformat(obj, { maxDepth: 10 })).to.be('foo.bar.baz=1');
+        expect(logformat(obj)).to.be('foo.bar.baz=1');
+    });
 });
