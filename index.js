@@ -31,7 +31,12 @@ module.exports = function logformat(obj, opts) {
         return moment(obj).format();
     }
 
-    obj = flatten(obj, flatOpts);               // flatten object
+    try {
+        obj = flatten(obj, flatOpts);               // flatten object
+    } catch (err) {
+        return '[Circular]';
+    }
+
     obj = _.toPairs(obj);                       // convert to array of key/value pairs
     obj = obj.map((pair) => {                   // manipulate values for better output
         switch (true) {

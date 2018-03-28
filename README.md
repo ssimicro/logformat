@@ -47,6 +47,8 @@ Returns:
 
 * formatted string
 
+NOTE: if `any` is an object with a circular reference, this function returns `'[Circular]'`;
+
 ## Example
 
 ```

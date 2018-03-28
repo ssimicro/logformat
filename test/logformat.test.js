@@ -86,4 +86,11 @@ describe('logformat', () => {
         expect(logformat(obj, { maxDepth: 10 })).to.be('foo.bar.baz=1');
         expect(logformat(obj)).to.be('foo.bar.baz=1');
     });
+    it('should not crash on a circular reference', () => {
+        const a = {};
+        const b = {};
+        a.b = b;
+        b.a = a;
+        expect(logformat(a)).to.be('[Circular]');
+    });
 });
