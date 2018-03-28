@@ -53,7 +53,7 @@ var fs = require('fs');
 
 console.log(logformat(fs.statSync('/dev/null')));
 
-// -> 'dev=287613608 mode=8630 nlink=1 uid=0 gid=0 rdev=50331650 blksize=131072 ino=303 size=0 blocks=0'
+// -> 'dev=6 mode=8630 nlink=1 uid=0 gid=0 rdev=259 blksize=4096 ino=1029 size=0 blocks=0 atime=2017-07-12T00:21:34-04:00 mtime=2017-07-12T00:21:34-04:00 ctime=2017-07-12T00:21:34-04:00 birthtime=2017-07-12T00:21:34-04:00'
 ```
 
 ## Testing
