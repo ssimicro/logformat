@@ -29,7 +29,8 @@
   "dependencies": {
     "flat": "^4.0.0",
     "lodash": "^4.17.5",
-    "moment": "^2.21.0"
+    "moment": "^2.21.0",
+    "traverse": "^0.6.6"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",

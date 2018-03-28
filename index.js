@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 const flatten = require('flat');
+const traverse = require('traverse');
 
 function toString(str) {
     try {
@@ -19,9 +20,28 @@ function applyQuotes(str) {
     return str.indexOf(' ') !== -1 ? '"' + str + '"' : str;
 }
 
+// Error objects have a lot of hidden (non-enumerable) properties that we want to include in the formatted log message (e.g. name, message, etc)
+function unhideErrorProperties(err) {
+    return _.extend(
+        _.cloneDeep(err),
+        _.pick(err, [ 'name', 'message', 'description', 'number', 'fileName', 'lineNumber', 'columnNumber', ])
+    );
+}
+
 module.exports = function logformat(obj, opts) {
 
+    const prefix = _.isError(obj) ? 'ERROR ' : ''; // prefix log message with ERROR when formatting a top level error
     const flatOpts = { maxDepth: _.get(opts, 'maxDepth') };
+
+    if (_.isError(obj)) {   // expose hidden properties such as name and message
+        obj = unhideErrorProperties(obj);
+    }
+
+    traverse(obj).forEach(function (x) {    // find errors and expose hidden properties such as name and message
+        if (_.isError(x)) {
+            this.update(unhideErrorProperties(x));
+        }
+    });
 
     if (obj === null || obj === undefined) {
         return '';
@@ -49,5 +69,5 @@ module.exports = function logformat(obj, opts) {
     obj = obj.map((pair) => pair.join('='));    // join key/value pairs with equal sign
     obj = obj.join(' ');                        // join all pairs with space
 
-    return obj;
+    return `${prefix}${obj}`;
 };

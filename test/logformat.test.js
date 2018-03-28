@@ -48,6 +48,12 @@ describe('logformat', () => {
         expect(logformat(new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)'))).to.be('2016-06-21T08:37:16-04:00');
         expect(logformat({ date: new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)') })).to.be('date=2016-06-21T08:37:16-04:00');
     });
+    it('should return a string when given an Error object', function () {
+        var err = new Error('Test');
+        err.name = 'logformat.test.err';
+        expect(logformat(err)).to.be('ERROR name=logformat.test.err message=Test');
+        expect(logformat({ err: err })).to.be('err.name=logformat.test.err err.message=Test');
+    });
     it('should return a string of key=value pairs for objects', () => {
         expect(logformat({
             foo: undefined,                         // maps to foo=undefined
