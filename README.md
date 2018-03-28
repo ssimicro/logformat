@@ -41,7 +41,7 @@ Parameters:
 
 * `any` anything you wish to stringify... booleans, strings, numbers, objects, arrays, etc.
 * `opts` options for controlling the behaviour of the function. Object. Optional.
- * `maxDepth` maximum depth that should be formatted. positive integer. Optional.
+  - `maxDepth` maximum depth that should be formatted. positive integer. Optional.
 
 Returns:
 
