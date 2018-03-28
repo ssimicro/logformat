@@ -11,6 +11,20 @@ describe('logformat', function () {
     it('should return a string when given a string', function () {
         expect(logformat('Hello, World!')).to.be('Hello, World!');
     });
+    it('should format an Object which does not inherit from Object', function () {
+        const obj = Object.create(null);
+        obj.foo = 'bar';
+        expect(logformat(obj)).to.be('foo=bar');
+
+        const nested = { foo: Object.create(null) };
+        nested.foo.bar = 'baz';
+        expect(logformat(nested)).to.be('foo.bar=baz');
+
+        const doubleNested = { foo: Object.create(null) };
+        doubleNested.foo = { bar: Object.create(null) };
+        doubleNested.foo.bar = 'baz';
+        expect(logformat(doubleNested)).to.be('foo.bar=baz');
+    });
     it('should return a string when given a number', function () {
         expect(logformat(42)).to.be('42');
     });
