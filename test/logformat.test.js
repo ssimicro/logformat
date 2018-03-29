@@ -1,6 +1,7 @@
 "use strict";
 
 const expect = require('expect.js');
+const isIsoDate = require('is-isodate');
 const logformat = require('../');
 
 describe('logformat', () => {
@@ -45,8 +46,9 @@ describe('logformat', () => {
         expect(logformat(false)).to.be('false');
     });
     it('should return an ISO8601 formatted string when given a Date object', () => {
-        expect(logformat(new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)'))).to.be('2016-06-21T08:37:16-04:00');
-        expect(logformat({ date: new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)') })).to.be('date=2016-06-21T08:37:16-04:00');
+        const date = new Date('Tue Jun 21 2016 08:37:16 GMT-0400 (EDT)');
+        expect(isIsoDate(logformat(date))).to.be(true);
+        expect(isIsoDate(logformat({ date: date }).split('=')[1])).to.be(true);
     });
     it('should return a string when given an Error object', function () {
         var err = new Error('Test');
