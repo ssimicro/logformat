@@ -54,6 +54,24 @@ describe('logformat', () => {
         expect(logformat(err)).to.be('ERROR name=logformat.test.err message=Test');
         expect(logformat({ err: err })).to.be('err.name=logformat.test.err err.message=Test');
     });
+    it('should not significantly modify its input', function () {
+        // we're most concerned about the magic we do to make error objects format properly
+        // we don't want to change the type (i.e. lose the Error-ness of error objects).
+
+        const err = new Error('Test');
+        logformat(err);
+        expect(err).to.be.an(Error);
+
+        const nested = { err: new Error('Test Nested') };
+        logformat(nested);
+        expect(nested.err).to.be.an(Error);
+
+        const doubleNested = { err: new Error('Test Double Nested Outer') };
+        doubleNested.err.inner = new Error('Test Double Nested Inner');
+        logformat(doubleNested);
+        expect(doubleNested.err).to.be.an(Error);
+        expect(doubleNested.err.inner).to.be.an(Error);
+    });
     it('should return a string of key=value pairs for objects', () => {
         expect(logformat({
             foo: undefined,                         // maps to foo=undefined
