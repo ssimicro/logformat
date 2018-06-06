@@ -7,6 +7,12 @@ const traverse = require('traverse');
 
 function toString(str) {
     try {
+        if (_.isArray(str) && _.isEmpty(str)) {
+            return  "[]";
+        }
+        if (_.isPlainObject(str) && _.isEmpty(str)) {
+            return  "{}";
+        }
         return _.has(str, 'toString') ? str.toString() : ''+str;
     } catch (err) {
         // some properties of mysql connection pools are objects that
@@ -46,6 +52,10 @@ module.exports = function logformat(obj, opts) {
 
     if (obj === null || obj === undefined) {
         return '';
+    } else if (_.isArray(obj) && _.isEmpty(obj)) {
+        return  "[]";
+    } else if (_.isPlainObject(obj) && _.isEmpty(obj)) {
+        return  "{}";
     } else if (typeof obj !== 'object' || _.isRegExp(obj)) {
         return toString(obj);
     } else if (_.isDate(obj)) {

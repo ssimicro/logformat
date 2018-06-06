@@ -35,6 +35,21 @@ describe('logformat', () => {
     it('should return an empty string when given undefined', () => {
         expect(logformat(undefined)).to.be('');
     });
+    it('should return an empty string when given an empty string', () => {
+        expect(logformat("")).to.be('');
+    });
+    it('should return an empty array as string when given an empty array', () => {
+        expect(logformat([])).to.be('[]');
+    });
+    it('should return an empty object as string when given an empty object', () => {
+        expect(logformat({})).to.be('{}');
+    });
+    it('should return a key=[] when given an empty array value', () => {
+        expect(logformat({x: []})).to.be('x=[]');
+    });
+    it('should return a key={} when given an empty object value', () => {
+        expect(logformat({x: {}})).to.be('x={}');
+    });
     it('should return a regular express as a string when given a RegExp', () => {
         expect(logformat(/^foobar$/)).to.be('/^foobar$/');
         expect(logformat(new RegExp("^foobar$"))).to.be('/^foobar$/');
@@ -86,15 +101,17 @@ describe('logformat', () => {
                 b: undefined,                       // maps to jkl.b=undefined
                 c: 'howdy',                         // maps to jkl.c=howdy
                 d: 'apple sauce',                   // maps to jkl.d="apple sauce"
-                f: [ 4, 'life' ]
+                f: [ 4, 'life' ],
+                g: {}                               // maps to jkl.g={}
             },
             mno: [
                 'this',                             // maps to mno.0=this
                 'is',                               // maps to mno.1=is
                 'a test'                            // maps to mno.2="a test"
             ],
-            pqr: /^foobar$/                         // maps to pqr="/^foobar$/"
-        })).to.be('foo=undefined bar=null abc=true def="Hello, World!" ghi=cheese jkl.a=null jkl.b=undefined jkl.c=howdy jkl.d="apple sauce" jkl.f.0=4 jkl.f.1=life mno.0=this mno.1=is mno.2="a test" pqr=/^foobar$/');
+            pqr: /^foobar$/,                        // maps to pqr="/^foobar$/"
+            stu: []                                 // maps to stu=[]
+        })).to.be('foo=undefined bar=null abc=true def="Hello, World!" ghi=cheese jkl.a=null jkl.b=undefined jkl.c=howdy jkl.d="apple sauce" jkl.f.0=4 jkl.f.1=life jkl.g={} mno.0=this mno.1=is mno.2="a test" pqr=/^foobar$/ stu=[]');
     });
     it('should return a string of key=value pairs for arrays', () => {
         expect(logformat([
@@ -103,8 +120,10 @@ describe('logformat', () => {
             undefined,
             'test',
             'quoted test',
-            42
-        ])).to.be('0=true 1=null 2=undefined 3=test 4="quoted test" 5=42');
+            42,
+            [],
+            {},
+        ])).to.be('0=true 1=null 2=undefined 3=test 4="quoted test" 5=42 6=[] 7={}');
     });
     it('should respect maxDepth option', () => {
         const obj = { foo: { bar: { baz: 1} } };
