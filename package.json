@@ -27,16 +27,16 @@
   },
   "homepage": "https://github.com/ssimicro/logformat#readme",
   "dependencies": {
-    "flat": "^4.1.0",
-    "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "flat": "^5.0.0",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "is-isodate": "0.0.1",
-    "jshint": "^2.10.1",
-    "mocha": "^5.2.0"
+    "jshint": "^2.11.1",
+    "mocha": "^8.0.1"
   },
   "jshintConfig": {
     "esversion": 6,
