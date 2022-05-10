@@ -138,4 +138,10 @@ describe('logformat', () => {
         b.a = a;
         expect(logformat(a)).to.be('[Circular]');
     });
+    it('should log Error .cause', () => {
+        const cause = new Error('bad credentials')
+        const err = new Error('could not connect to db', { cause });
+        expect(logformat(err)).to.contain('bad credentials');
+        expect(logformat(err)).to.contain('could not connect');
+    });
 });

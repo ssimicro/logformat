@@ -28,11 +28,16 @@ function applyQuotes(str) {
 
 // Error objects have a lot of hidden (non-enumerable) properties that we want to include in the formatted log message (e.g. name, message, etc)
 function unhideErrorProperties(err) {
-    return _.extend(
+    err = _.extend(
         Object.create(Object.getPrototypeOf(err)),
         err,
-        _.pick(err, [ 'name', 'message', 'description', 'number', 'fileName', 'lineNumber', 'columnNumber', ])
+        _.pick(err, [ 'name', 'message', 'description', 'number', 'fileName', 'lineNumber', 'columnNumber', 'cause' ])
     );
+
+    if (_.isError(err.cause)) {
+        err.cause = unhideErrorProperties(err.cause);
+    }
+    return err;
 }
 
 module.exports = function logformat(obj, opts) {
