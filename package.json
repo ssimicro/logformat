@@ -30,13 +30,13 @@
     "flat": "^5.0.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "traverse": "^0.6.6"
+    "traverse": "^0.6.7"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "is-isodate": "0.0.1",
-    "jshint": "^2.13.5",
-    "mocha": "^10.0.0"
+    "jshint": "^2.13.6",
+    "mocha": "^10.2.0"
   },
   "jshintConfig": {
     "esversion": 6,
