@@ -4,8 +4,7 @@
   "description": "stringify objects into searchable strings",
   "main": "index.js",
   "scripts": {
-    "requirelint": "require-case-linter .",
-    "pretest": "npm run requirelint && jshint index.js",
+    "pretest": "jshint index.js",
     "test": "mocha -R spec"
   },
   "repository": {
@@ -34,7 +33,6 @@
     "traverse": "^0.6.11"
   },
   "devDependencies": {
-    "@ssi/require-case-linter": "^1.0.2",
     "expect.js": "^0.3.1",
     "is-isodate": "0.0.1",
     "jshint": "^2.13.6",
